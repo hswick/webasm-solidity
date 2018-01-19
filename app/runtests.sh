@@ -1,6 +1,6 @@
 #!/bin/sh
 
-testrpc -d test -l 7000000 &
+ganache-cli -d test -l 7000000 &
 
 sleep 10
 

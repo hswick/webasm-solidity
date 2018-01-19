@@ -1,0 +1,27 @@
+{
+  "name": "webasm-solidity",
+  "version": "1.0.0",
+  "description": "Web Assembly interpreter written in Solidity",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrueBitFoundation/webasm-solidity.git"
+  },
+  "keywords": [
+    "wasm",
+    "solidity",
+    "truebit"
+  ],
+  "author": "Truebit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TrueBitFoundation/webasm-solidity/issues"
+  },
+  "homepage": "https://github.com/TrueBitFoundation/webasm-solidity#readme"
+}
