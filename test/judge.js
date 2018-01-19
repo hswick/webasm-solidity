@@ -35,21 +35,38 @@ contract('Judge', async (accounts) => {
         if (phase == 5 || phase == 1) m = proof
         let vm
         if (typeof proof.vm != "object") {
-          vm = { code: "0x00", stack:"0x00", call_stack:"0x00", calltable:"0x00",
-          globals : "0x00", memory:"0x00", calltypes:"0x00", input_size:"0x00", input_name:"0x00", input_data:"0x00",
-          pc:0, stack_ptr:0, call_ptr:0, memsize:0}
+          vm = { 
+            code: "0x00", 
+            stack:"0x00",
+            call_stack:"0x00", 
+            calltable:"0x00",
+            globals : "0x00",
+            memory:"0x00",
+            calltypes:"0x00",
+            input_size:"0x00", 
+            input_name:"0x00",
+            input_data:"0x00",
+            pc:0,
+            stack_ptr:0, 
+            call_ptr:0,
+            memsize:0
+          }
         } else { vm = proof.vm }
+
+        let registers = [m.reg1, m.reg2, m.reg3, m.ireg]
+        let roots = [vm.code, vm.stack, vm.memory, vm.call_stack, vm.globals, vm.calltable, vm.calltypes, vm.input_size, vm.input_name, vm.input_data]
+        let pointers = [vm.pc, vm.stack_ptr, vm.call_ptr, vm.memsize]
 
         try {
           let result = await judge.judge.call(
             testData.states, 
             phase,
-            merkle, 
+            merkle,
             m.vm,
-            m.op, 
-            [m.reg1, m.reg2, m.reg3, m.ireg],
-            [vm.code, vm.stack, vm.memory, vm.call_stack, vm.globals, vm.calltable, vm.calltypes, vm.input_size, vm.input_name, vm.input_data],
-            [vm.pc, vm.stack_ptr, vm.call_ptr, vm.memsize]
+            m.op,
+            registers,
+            roots,
+            pointers
           )
           resolve(result.toNumber())
         } catch(e) {
@@ -62,13 +79,10 @@ contract('Judge', async (accounts) => {
     fs.readdirSync(dataFolder).forEach(async (file) => {
       it('should test the WASM judge on file ' + file, async () => {
         let testData = JSON.parse(fs.readFileSync(__dirname+'/data/'+file))
-        await new Promise(async (resolve, reject) => {
-          //12 phases
-          for(i = 0; i < 12; i++) {
-            assert.equal(await judgePhase(testData, i), i)
-          }
-          resolve() 
-        })
+        //12 phases
+        for(i = 0; i < 12; i++) {
+          assert.equal(await judgePhase(testData, i), i)
+        }
       })
     })
   })
